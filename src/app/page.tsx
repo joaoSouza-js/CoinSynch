@@ -10,52 +10,56 @@ import WavesFormImage from '@/assets/wavesForm.svg'
 import { Card } from '@/components/Card'
 import CoinSvg from '@/assets/coin.svg'
 import { NewsLetterForm } from '@/components/NewsLetterForm'
+import { ImagesCarrousel } from '@/components/ImagesCarrousel'
 
 export default function Home() {
   return (
    <div>
-    <header className=' py-4 flex justify-between fixed top-0 max-w-7xl w-full text-sm bg-white'>
-      <div className='flex items-center'>
-        <Image src={Logo} alt=''/>
-        <nav className='flex gap-x-6 ml-10'>
-          <Link
-            className='hover:text-gray-600 transition-all'
-            href={'#'}
+    <header className=' py-4 px-4 flex justify-center fixed top-0   w-full text-sm bg-white z-10'>
+      <div className='flex w-full justify-between max-w-7xl '>
 
-          >
-            About us
-          </Link>
-          <Link
-            className='hover:text-gray-600 transition-all'
-            href={'#'}
-
-          >
-          Top Cryptos
-          </Link>
-
-        </nav>
-
-      </div>
-      <div className='flex items-center gap-x-20'>
-        <div>
-          <span>BIT </span>
-        </div>
-        <nav className='flex  items-center gap-x-6'>
-          <Link
+        <div className='flex items-center'>
+          <Image src={Logo} alt=''/>
+          <nav className='flex gap-x-6 ml-10'>
+            <Link
+              className='hover:text-gray-600 transition-all'
               href={'#'}
 
             >
               About us
-          </Link>
-          <Button className='py-2'>Sign up</Button>
-        </nav>
+            </Link>
+            <Link
+              className='hover:text-gray-600 transition-all'
+              href={'#'}
+
+            >
+            Top Cryptos
+            </Link>
+
+          </nav>
+
+        </div>
+        <div className='flex items-center gap-x-20'>
+          <div>
+            <span>BIT </span>
+          </div>
+          <nav className='flex  items-center gap-x-6'>
+            <Link
+                href={'#'}
+
+              >
+                About us
+            </Link>
+            <Button className='py-2'>Sign up</Button>
+          </nav>
+        </div>
+        
       </div>
-      
 
 
     </header>
 
-    <section className='mt-40 grid  items-center grid-cols-[60%_40%]'>
+    <section className='mt-40 grid px-4  items-center grid-cols-[60%_40%] max-w-7xl m-auto'>
       <div>
           <h1 className='text-5xl text-yellow-500 font-bold'>
             Lorem ipsum dolor sit amet, consectetur
@@ -77,18 +81,32 @@ export default function Home() {
           </div>
       </div>
       <div>
-        <Image
-          alt=''
-          src={HappyWomenImage}
+       
+        <ImagesCarrousel
+          images={[
+            {
+              key: '0',
+              src: HappyWomenImage.src,
+              alt:'happyWomen',
+            },
+            {
+              key: '1',
+              src: HappyWomenImage.src,
+              alt:'happyWomen',
+            },
+        
+          ]}
         />
       </div>
     </section>
+
     <Image
       alt=''
+      className='w-full'
       src={WavesImage}
     />
 
-    <section className='grid pt-32 grid-cols-[55%_45%] gap-8 bg-gradient-to-b pb-32 from-white to-[#F7F7F7] '>
+    <section className='grid pt-32 max-w-7xl mx-auto grid-cols-[60%_40%]  bg-gradient-to-b pb-32 from-white to-[#F7F7F7] '>
       <div className='flex flex-col gap-8'>
           <div className='flex gap-x-8'>
 
@@ -126,7 +144,7 @@ export default function Home() {
 
           </div>
       </div>
-      <div className='flex flex-col justify-center  max-w-md'>
+      <div className='flex flex-col justify-center pl-8  max-w-md'>
         <strong className='text-yellow-500 text-xl font-bold'>Lorem ipsum </strong>
         <span className='text-5xl mt-1 block text-gray-700 font-bold'>Lorem ipsum </span>
         <p className='mt-4 '>Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor</p>
@@ -137,7 +155,7 @@ export default function Home() {
       
     </section>
 
-    <section>
+    <section className='max-w-7xl mx-auto px-6 '>
       <h2>Top Cryptos</h2>
       <table className='w-full table-auto border-collapse'>
         <thead className='text-left' >
@@ -167,25 +185,28 @@ export default function Home() {
       </table>
     </section>
 
-    <section className='bg-yellow-600  py-32 flex justify-center gap-60 relative'>
-      <div className='text-white z-10'>
-        <h2 className='font-bold text-2xl text-yellow-200'>
-          Lorem ipsum 
-        </h2>
-        <span className='block mt-1 font-bold text-4xl'>Lorem ipsum </span>
-        <p className='mt-4 max-w-sm'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
-        </p>
-      </div>
-      <div className='w-full max-w-[384px]  z-10'>
-        <NewsLetterForm/>
+    <section className='bg-yellow-600 px-6  py-32 flex justify-center  relative'>
+      <div className='flex w-full justify-between max-w-5xl'>
+        <div className='text-white z-10'>
+          <h2 className='font-bold text-2xl text-yellow-200'>
+            Lorem ipsum 
+          </h2>
+          <span className='block mt-1 font-bold text-4xl'>Lorem ipsum </span>
+          <p className='mt-4 max-w-sm'>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
+          </p>
+        </div>
+        <div className='w-full max-w-[384px]  z-10'>
+          <NewsLetterForm/>
+
+        </div>
+        <Image
+          className='absolute top-4 -z-3 left-0 right-0'
+          src={WavesFormImage}
+          alt=''
+        />
 
       </div>
-      <Image
-        className='absolute top-4 -z-3 left-0 right-0'
-        src={WavesFormImage}
-        alt=''
-      />
 
     </section>
 
