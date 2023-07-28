@@ -46,9 +46,7 @@ export function ImagesCarrousel({images}:ImagesCarrouselProps){
   
 
       return (
-        <div onScroll={() => {
-            console.log('oi mundo')
-        }} ref={sliderRef} className="keen-slider w-full ">
+        <div ref={sliderRef} className="keen-slider w-full  ">
             {
                 images.map(image => (
                     <Image

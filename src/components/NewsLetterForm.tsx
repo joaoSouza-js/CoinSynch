@@ -11,7 +11,7 @@ export function NewsLetterForm(){
                 <TextInput.Label>
                     Email
                 </TextInput.Label>
-                <TextInput.Input placeholder="Digite o seu email"/>
+                <TextInput.Input hasBorder={false} placeholder="Digite o seu email"/>
             </TextInput.Root>
             <Button className="hover:bg-yellow-400">
                 Subscribe

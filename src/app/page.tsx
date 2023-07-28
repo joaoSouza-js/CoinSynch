@@ -11,6 +11,7 @@ import { Card } from '@/components/Card'
 import CoinSvg from '@/assets/coin.svg'
 import { NewsLetterForm } from '@/components/NewsLetterForm'
 import { ImagesCarrousel } from '@/components/ImagesCarrousel'
+import { SignUpModal } from '@/components/signUpModal'
 
 export default function Home() {
   return (
@@ -50,7 +51,9 @@ export default function Home() {
               >
                 About us
             </Link>
-            <Button className='py-2'>Sign up</Button>
+            <SignUpModal>
+              <Button className='py-2'>Sign up</Button>
+            </SignUpModal>
           </nav>
         </div>
         
@@ -68,15 +71,17 @@ export default function Home() {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit 
             amet luctus venenatis, lectus magna fringilla urna, porttitor
           </p>
-          <Button className='w-72 mt-8'>
-            SIGN UP NOW
-            <ArrowRightIcon className="h-4 w-4 font-bold text-white" />
-          </Button>
+           <SignUpModal>
+              <Button className='w-72 mt-8'>
+                SIGN UP NOW
+                <ArrowRightIcon className="h-4 w-4 font-bold text-white" />
+              </Button>
+           </SignUpModal>
 
           <div className='text-xl text-yellow-500 gap-x-16 flex mt-20'>
-              <span>Cryptos</span>
-              <span>NFTs</span>
-              <span>Games</span>
+              <span className='inline-block px-4 py-2 bg-yellow-100 rounded'>Cryptos</span>
+              <span className='inline-block px-4 py-2 bg-yellow-100 rounded'>NFTs</span>
+              <span className='inline-block px-4 py-2 bg-yellow-100 rounded'>Games</span>
 
           </div>
       </div>
@@ -148,9 +153,12 @@ export default function Home() {
         <strong className='text-yellow-500 text-xl font-bold'>Lorem ipsum </strong>
         <span className='text-5xl mt-1 block text-gray-700 font-bold'>Lorem ipsum </span>
         <p className='mt-4 '>Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor</p>
-        <Button className='mt-10 w-44'>
-          Sign up now
-        </Button>
+        <SignUpModal>
+          <Button className='mt-10 w-44'>
+            Sign up now
+          </Button>
+        </SignUpModal>
+
       </div>
       
     </section>

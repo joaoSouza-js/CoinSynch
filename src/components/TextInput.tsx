@@ -7,6 +7,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     leftIcon?: () => ReactNode,
     rightIcon?: () => ReactNode,
     onRightClick?: () => void,
+    hasBorder?: boolean
 }
 
 interface TextInputRoot{
@@ -23,14 +24,18 @@ interface TextInputRoot{
 }
 
 
- function TextInputInput({onRightClick,rightIcon:RightIcon,leftIcon:LeftIcon,...rest}: InputProps){
+ function TextInputInput({onRightClick,rightIcon:RightIcon,leftIcon:LeftIcon, hasBorder=true,...rest}: InputProps){
     return (
-        <div className='flex w-full h-12 px-4 items-center rounded-lg bg-white border-2  focus-within:border-gray-700 focus-within: '>
+        <div className={cn(
+            'flex w-full h-12 px-4 items-center rounded-lg bg-white border-2  focus-within:border-gray-700   ',{
+                'border border-gray-500': hasBorder
+            }
+            )}>
             {
                 LeftIcon  && <LeftIcon/>
             }
             <input
-                className={`flex-grow ${!!LeftIcon && 'px-2'}  text-gray-800 focus:outline-none placeholder:text-gray-400`}
+                className={`flex-grow ${!!LeftIcon && 'px-2'}  text-gray-800 focus:outline-none placeholder:text-gray-400  focus:shadow-none`}
                 {...rest}
 
             />
@@ -49,10 +54,12 @@ interface TextInputRoot{
 
 
 interface TextInputPasswordProps extends InputHTMLAttributes<HTMLInputElement> {
-    visible?: boolean
+    visible?: boolean,
+    hasBorder?: boolean,
+    variant?: 'primary' | 'secondary'
 }
 
-function TextInputPassword({visible=false,...rest}:TextInputPasswordProps){
+function TextInputPassword({visible=false,variant='primary',...rest}:TextInputPasswordProps){
     const [isVisible, setIsVisible]= useState(!visible)
 
     function handleChangeVisibility(){
@@ -61,11 +68,17 @@ function TextInputPassword({visible=false,...rest}:TextInputPasswordProps){
 
     return (
         <TextInputInput 
-            leftIcon={() => <LockClosedIcon className='w-4 h-4'/>}
+            leftIcon={() => <LockClosedIcon className={cn('w-4 h-4 text-gray-300',{
+                'text-gray-500': variant === 'secondary'
+            })}/>}
             type={isVisible ? 'text' : 'password'}
             onRightClick={handleChangeVisibility}
             rightIcon={
-                () => isVisible ? <EyeIcon className='w-4 h-4'/> : <EyeSlashIcon className='w-4 h-4'/>
+                () => isVisible ? <EyeIcon className={cn('w-4 h-4 text-gray-300',{
+                    'text-gray-500': variant === 'secondary'
+                })}/> : <EyeSlashIcon className={cn('w-4 h-4 text-gray-300',{
+                    'text-gray-500': variant === 'secondary'
+                })}/>
             }
             {...rest}
             
