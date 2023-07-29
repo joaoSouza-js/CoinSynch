@@ -1,28 +1,65 @@
 'use client'
 
+import * as z from 'zod';
+import {  ReactNode } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import Button from './Button';
-import Logo from '@/assets/Logo.svg'
 import * as Checkbox from '@radix-ui/react-checkbox';
-
-import { DialogPortal } from './DialogPortal';
-import { ButtonHTMLAttributes, ReactNode } from 'react';
-import Image from 'next/image';
-import { TextInput } from './TextInput';
+import { useForm, Controller} from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod';
 import { CheckIcon, EnvelopeIcon, UserIcon } from '@heroicons/react/24/solid';
+
+import { PasswordRegex } from '@/utils/regex'
+
+import Button from './Button';
+import { TextInput } from './TextInput';
+import { DialogPortal } from './DialogPortal';
 
 interface SignUpModalProps {
     children: ReactNode
 }
 
+const { passwordErrorMessage, Regex: passwordRegex } = PasswordRegex
+
+const NewUserFormSchema = z.object({
+    name: z.string({required_error:"Digite o seu Nome."}).min(4, 'Nome Precisa de 4 ou mais letras'),
+    email: z.string({required_error:"Digite o seu Email."}).email('Digite um email válido'),
+    password: z.string({required_error:"Digite a Senha."}).regex(passwordRegex,passwordErrorMessage),
+    confirm_password: z.string({required_error:"Digite a Senha novamente."}),
+    agree_with_terms: z.boolean().default(false).refine(agree_with_terms => agree_with_terms === true , 'Aceite os termos para continuar')
+  }).superRefine((schemaData, context) => {
+    if (schemaData.password !== schemaData.confirm_password) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["confirm_password"],
+        message: "Confirme a Senha",
+      })
+    }
+  })
+
+type NewUserFormSchemaData = z.input<typeof NewUserFormSchema>
+
 export function SignUpModal({children}:SignUpModalProps){
+
+    const {formState, control, register, handleSubmit,watch} = useForm<NewUserFormSchemaData>({
+        resolver: zodResolver(NewUserFormSchema)
+    })
+    
+    const { errors, isSubmitting} = formState
+
+    async function handleCreateNewUser(formData: NewUserFormSchemaData ){
+        console.log(formData    )
+    }
+    
     return (
         <Dialog.Root>
             <Dialog.Trigger asChild>
                 {children}
             </Dialog.Trigger>
             <DialogPortal>
-                <div className='flex flex-col gap-6'>
+                <form 
+                    onSubmit={handleSubmit(handleCreateNewUser)}  
+                     className='flex flex-col gap-6'
+                >
                     
                     <Dialog.Title  className='text-2xl text-center leading-tight'>
                         Sign up to 
@@ -32,59 +69,110 @@ export function SignUpModal({children}:SignUpModalProps){
                     <TextInput.Root>
                         <TextInput.Input
                             placeholder='Name'
+                            {...register('name')}
+                            isInvalid={!!errors.name}
                             leftIcon={() => <UserIcon className='w-4 h-4 text-gray-300'/>}
 
                         />
+                        {
+                            errors.name && (
+                                <TextInput.Error>
+                                    {errors.name.message}
+                                </TextInput.Error>
+                            )
+                        }
                     </TextInput.Root>
                     <TextInput.Root>
                         <TextInput.Input
                             placeholder='Email'
+                            {...register('email')}
+                            isInvalid={!!errors.email}
                             leftIcon={() => <EnvelopeIcon className='w-4 h-4 text-gray-300'/>}
 
                         />
+                        {
+                            errors.email && (
+                                <TextInput.Error>
+                                    {errors.email.message}
+                                </TextInput.Error>
+                            )
+                        }
                     </TextInput.Root>
 
                     <TextInput.Root>
                         <TextInput.Password
-                            
+                            isInvalid={!!errors.password}
                             placeholder='Password'
+                            {...register('password')}
                             
                         />
-                        
+                         {
+                            errors.password?.message && (
+                                <TextInput.Error>
+                                    {errors.password.message}
+                                </TextInput.Error>
+                            )
+                        }
                     </TextInput.Root>
 
                     <TextInput.Root>
-                        <TextInput.Password
-                            
+                    <TextInput.Password
+                            {...register('confirm_password')}
+                            isInvalid={!!errors.confirm_password}
                             placeholder='Password'
                             
                         />
+                         {
+                            errors.confirm_password && (
+                                <TextInput.Error>
+                                    {errors.confirm_password.message}
+                                </TextInput.Error>
+                            )
+                        }
                         
                     </TextInput.Root>
 
-                    <label className='flex gap-4  ' htmlFor="checkbox">
-                        <div className=' h-5 w-5 '>
-                            <Checkbox.Root id='checkbox' className='border h-5 w-5 flex rounded    items-center justify-center border-yellow-500'>
-                                <Checkbox.Indicator className="text-violet11">
-                                    <CheckIcon className='w-3 h-3 text-yellow-500' />
-                                </Checkbox.Indicator>
-                            </Checkbox.Root>
+                        <Controller
+                            control={control}
+                            name='agree_with_terms'
+                            render={({field:{onChange}}) =>  (
+                            
+                            <label className='flex gap-4  ' htmlFor="checkbox">
+                                <div className=' h-5 w-5 '>
+                                    <Checkbox.Root onCheckedChange={onChange} id='checkbox' className='border h-5 w-5 flex rounded    items-center justify-center border-yellow-500'>
+                                        <Checkbox.Indicator className="text-violet11">
+                                            <CheckIcon className='w-3 h-3 text-yellow-500' />
+                                        </Checkbox.Indicator>
+                                    </Checkbox.Root>
+                                </div>
+                                <div>
+                                    <p className='flex-grow-1'>
+                                        I have read and accept the <strong>Privacy Policy </strong>and Terms of User <strong>Sign up.</strong>
+                                    </p>
+                                    {
+                                        errors.agree_with_terms && (
+                                            <span className=' text-sm text-red-500 mt-1'>{errors.agree_with_terms.message}</span>
+                                        )
+                                    }
 
-                        </div>
-                        <p className='flex-grow-1'>
-                        I have read and accept the <strong>Privacy Policy </strong>and Terms of User <strong>Sign up.</strong>
-                        </p>
+                                </div>
 
-                    </label>
+                            </label>
 
-                    <Button>
+                            )}
+                        />
+
+                    <Button 
+                        disabled={isSubmitting}
+                        type='submit'
+                    >
                         Sign in
                     </Button>
 
                  
                     
 
-                </div>
+                </form>
             </DialogPortal>
         </Dialog.Root>
     )

@@ -17,7 +17,7 @@ export function Button ({
   return (
     <button
       className={cn(
-        'rounded-[48px] gap-x-[10px] w-full text-white flex justify-center items-center px-6 py-[14px] bg-yellow-500 font-bold hover:bg-yellow-600 transition-all ',
+        'rounded-[48px] h-12 gap-x-[10px] w-full text-white flex justify-center items-center px-6 py-[14px] bg-yellow-500 font-bold hover:bg-yellow-600 transition-all disabled:cursor-not-allowed ',
         {
             'bg-green-700 hover:bg-green-600' : variant === 'secondary',
             'px-4 py-2': size === 'small' 
