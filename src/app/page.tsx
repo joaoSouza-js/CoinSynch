@@ -12,6 +12,7 @@ import CoinSvg from '@/assets/coin.svg'
 import { NewsLetterForm } from '@/components/NewsLetterForm'
 import { ImagesCarrousel } from '@/components/ImagesCarrousel'
 import { SignUpModal } from '@/components/signUpModal'
+import { SignInModal } from '@/components/signInModal'
 
 export default function Home() {
   return (
@@ -44,17 +45,16 @@ export default function Home() {
           <div>
             <span>BIT </span>
           </div>
-          <nav className='flex  items-center gap-x-6'>
-            <Link
-                href={'#'}
-
-              >
-                About us
-            </Link>
+          <div className='flex  items-center gap-x-6'>
+            <SignInModal>
+               <button className='min-w-fit'>
+                  Sign in
+               </button>
+            </SignInModal>
             <SignUpModal>
               <Button className='py-2'>Sign up</Button>
             </SignUpModal>
-          </nav>
+          </div>
         </div>
         
       </div>
