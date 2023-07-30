@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import Button from '@/components/Button'
+import {Button} from '@/components/Button'
 import Logo from '@/assets/Logo.svg'
 import Link from 'next/link'
 import HappyWomenImage  from '@/assets/happy-woman.png'
@@ -46,13 +46,11 @@ export default function Home() {
             <span>BIT </span>
           </div>
           <div className='flex  items-center gap-x-6'>
-            <SignInModal>
-               <button className='min-w-fit'>
-                  Sign in
-               </button>
+            <SignInModal unstyled  className='min-w-fit'>
+                  Sign in   
             </SignInModal>
-            <SignUpModal>
-              <Button className='py-2'>Sign up</Button>
+            <SignUpModal className='py-2'>
+                Sign up
             </SignUpModal>
           </div>
         </div>
@@ -71,11 +69,11 @@ export default function Home() {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit 
             amet luctus venenatis, lectus magna fringilla urna, porttitor
           </p>
-           <SignUpModal>
-              <Button className='w-72 mt-8'>
+           <SignUpModal  className='w-72 mt-8'>
+              
                 SIGN UP NOW
                 <ArrowRightIcon className="h-4 w-4 font-bold text-white" />
-              </Button>
+              
            </SignUpModal>
 
           <div className='text-xl text-yellow-500 gap-x-16 flex mt-20'>
@@ -90,12 +88,12 @@ export default function Home() {
         <ImagesCarrousel
           images={[
             {
-              key: '0',
+             
               src: HappyWomenImage.src,
               alt:'happyWomen',
             },
             {
-              key: '1',
+           
               src: HappyWomenImage.src,
               alt:'happyWomen',
             },
@@ -153,10 +151,10 @@ export default function Home() {
         <strong className='text-yellow-500 text-xl font-bold'>Lorem ipsum </strong>
         <span className='text-5xl mt-1 block text-gray-700 font-bold'>Lorem ipsum </span>
         <p className='mt-4 '>Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor</p>
-        <SignUpModal>
-          <Button className='mt-10 w-44'>
+        <SignUpModal className='mt-10 w-44'>
+       
             Sign up now
-          </Button>
+          
         </SignUpModal>
 
       </div>

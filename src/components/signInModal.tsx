@@ -10,12 +10,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import {  EnvelopeIcon } from '@heroicons/react/24/solid';
 
 
-import Button from './Button'
+import  { ButtonProps, Button } from './Button'
 import { TextInput } from './TextInput'
 import { DialogPortal } from './DialogPortal'
 
-interface SignModalProps {
-    children: ReactNode
+interface SignModalProps extends ButtonProps {
+    unstyled?: boolean
 }
 
 const SignInFormSchema = z.object({
@@ -25,7 +25,7 @@ const SignInFormSchema = z.object({
 
 type SignInFormSchemaData = z.input<typeof SignInFormSchema>
 
-export function SignInModal({children}: SignModalProps){
+export function SignInModal({unstyled=false,className,children, ...rest}: SignModalProps){
 
     const {formState,register, handleSubmit,} = useForm<SignInFormSchemaData>({
         resolver: zodResolver(SignInFormSchema)
@@ -40,7 +40,12 @@ export function SignInModal({children}: SignModalProps){
     return(
         <Dialog.Root>
             <Dialog.Trigger asChild>
-                {children}
+                {
+                    unstyled 
+                        ? (<button className={className}>{children}</button>) 
+                        : <Button className={className}>{children}</Button>
+                }
+                
             </Dialog.Trigger>
             <DialogPortal>
                 <form 

@@ -10,12 +10,12 @@ import { CheckIcon, EnvelopeIcon, UserIcon } from '@heroicons/react/24/solid';
 
 import { PasswordRegex } from '@/utils/regex'
 
-import Button from './Button';
+import  {Button, ButtonProps } from './Button';
 import { TextInput } from './TextInput';
 import { DialogPortal } from './DialogPortal';
 
-interface SignUpModalProps {
-    children: ReactNode
+interface SignUpModalProps  extends ButtonProps{
+    unstyled?: boolean
 }
 
 const { passwordErrorMessage, Regex: passwordRegex } = PasswordRegex
@@ -38,7 +38,7 @@ const NewUserFormSchema = z.object({
 
 type NewUserFormSchemaData = z.input<typeof NewUserFormSchema>
 
-export function SignUpModal({children}:SignUpModalProps){
+export function SignUpModal({unstyled,children, ...rest}:SignUpModalProps){
 
     const {formState, control, register, handleSubmit,watch} = useForm<NewUserFormSchemaData>({
         resolver: zodResolver(NewUserFormSchema)
@@ -53,7 +53,12 @@ export function SignUpModal({children}:SignUpModalProps){
     return (
         <Dialog.Root>
             <Dialog.Trigger asChild>
-                {children}
+                {
+                    unstyled 
+                        ? (<button>{children}</button>) 
+                        : <Button {...rest}>{children}</Button>
+                }
+          
             </Dialog.Trigger>
             <DialogPortal>
                 <form 

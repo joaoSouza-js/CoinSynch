@@ -46,13 +46,14 @@ export function ImagesCarrousel({images}:ImagesCarrouselProps){
   
 
       return (
-        <div ref={sliderRef} className="keen-slider w-full  ">
+        <div  ref={sliderRef} className="keen-slider w-full  ">
             {
-                images.map(image => (
+                images.map((image,index) => (
                     <Image
-                        className="keen-slider__slide"
+                        className="keen-slider__slide w-[500px]  h-[480px] "
                         width={500}
                         height={600}
+                        key={index}
                         {...image}
                     />
                 ))
