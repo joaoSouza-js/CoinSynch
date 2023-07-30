@@ -1,7 +1,7 @@
 'use client'
 
 import * as z from 'zod';
-import {  ReactNode } from 'react';
+import axios from 'axios';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { useForm, Controller} from 'react-hook-form'
@@ -13,6 +13,7 @@ import { PasswordRegex } from '@/utils/regex'
 import  {Button, ButtonProps } from './Button';
 import { TextInput } from './TextInput';
 import { DialogPortal } from './DialogPortal';
+import { useRouter } from 'next/navigation'
 
 interface SignUpModalProps  extends ButtonProps{
     unstyled?: boolean
@@ -40,6 +41,8 @@ type NewUserFormSchemaData = z.input<typeof NewUserFormSchema>
 
 export function SignUpModal({unstyled,children, ...rest}:SignUpModalProps){
 
+    const router = useRouter()
+
     const {formState, control, register, handleSubmit,watch} = useForm<NewUserFormSchemaData>({
         resolver: zodResolver(NewUserFormSchema)
     })
@@ -47,7 +50,20 @@ export function SignUpModal({unstyled,children, ...rest}:SignUpModalProps){
     const { errors, isSubmitting} = formState
 
     async function handleCreateNewUser(formData: NewUserFormSchemaData ){
-        console.log(formData    )
+        try {
+            await axios.post('/api/user', {
+                email: formData.email,
+                name: formData.name,
+                password: formData.password,
+            })
+
+            router.push('/dashboard')
+            
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                alert(error.response?.data)
+            }
+        }
     }
     
     return (

@@ -1,9 +1,7 @@
 'use client'
 
-
 import * as z from 'zod'
 import Link from 'next/link'
-import { ReactNode } from 'react'
 import { useForm} from 'react-hook-form'
 import * as Dialog from '@radix-ui/react-dialog'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -13,7 +11,8 @@ import {  EnvelopeIcon } from '@heroicons/react/24/solid';
 import  { ButtonProps, Button } from './Button'
 import { TextInput } from './TextInput'
 import { DialogPortal } from './DialogPortal'
-
+import axios, { AxiosError, isAxiosError } from 'axios'
+import { useRouter } from 'next/navigation'
 interface SignModalProps extends ButtonProps {
     unstyled?: boolean
 }
@@ -31,10 +30,34 @@ export function SignInModal({unstyled=false,className,children, ...rest}: SignMo
         resolver: zodResolver(SignInFormSchema)
     })
 
+    const router = useRouter()
+
+  
+
+    
+
     const { errors, isSubmitting} = formState
 
     async function handleSignIn(formData: SignInFormSchemaData){
-        console.log(formData)
+
+        try {
+            const response = await axios.post('/api/session', {
+                email: formData.email,
+                password: formData.password,
+            })
+
+            router.push('/dashboard')
+
+           
+
+            
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                alert(error.response?.data)
+            }
+        }
+
+        
     }
 
     return(
@@ -42,8 +65,8 @@ export function SignInModal({unstyled=false,className,children, ...rest}: SignMo
             <Dialog.Trigger asChild>
                 {
                     unstyled 
-                        ? (<button className={className}>{children}</button>) 
-                        : <Button className={className}>{children}</Button>
+                        ? (<button className={className} >{children}</button>) 
+                        : <Button className={className} >{children}</Button>
                 }
                 
             </Dialog.Trigger>

@@ -28,20 +28,7 @@ export function ImagesCarrousel({images}:ImagesCarrouselProps){
       )
  
     
-    let hasScrolled = false;
 
-    function handleScroll() {
-        if (!hasScrolled) {
-          instanceRef.current?.next()
-          console.log('User has scrolled for the first time!');
-          hasScrolled = true;
-        }
-      
-        // You can add additional code here to handle subsequent scrolls if needed.
-      }
-      
-      // Add the event listener to the 'scroll' event
-      window.addEventListener('scroll', handleScroll);
     
   
 

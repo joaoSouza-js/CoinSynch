@@ -25,7 +25,7 @@ export default function Home() {
           <nav className='flex gap-x-6 ml-10'>
             <Link
               className='hover:text-gray-600 transition-all'
-              href={'#'}
+              href={'/dashboard'}
 
             >
               About us

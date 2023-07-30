@@ -1,6 +1,7 @@
 'use client'
 
 import { z } from "zod";
+import axios from 'axios';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -14,13 +15,16 @@ const newsLetterSchema  = z.object({
 type newsLetterSchemaData = z.input<typeof newsLetterSchema>
 
 export function NewsLetterForm(){
-    const {formState,register, handleSubmit,} = useForm<newsLetterSchemaData>({
+    const {formState,register, handleSubmit} = useForm<newsLetterSchemaData>({
         resolver: zodResolver(newsLetterSchema)
     })
     const { errors, isSubmitting} = formState
 
     async function handleSubscribeEmail(formData:newsLetterSchemaData) {
-        
+        const response = await axios.post('/api/subscribe',{
+            email: 'lari2g@gmail.com',
+        })
+        console.log(response.data)
     }
     return (
         <form 
@@ -47,7 +51,7 @@ export function NewsLetterForm(){
                 }
             </TextInput.Root>
             <Button 
-                disabled={isSubmitting}
+              
                 className="hover:bg-yellow-400"
             >
                 Subscribe
