@@ -40,12 +40,19 @@ export async function POST(request: NextResponse,response: NextApiResponse){
         });
     }
 
+    const userInfo = {
+        email: user.email,
+        name: user.name
+    }
+
+    const userInfoInStringify= JSON.stringify(userInfo)
+
     const cookieExpiration = 60 * 60 * 24 * 30 // 30 days
 
     return NextResponse.redirect(redirectUrl, {
         headers: {
           'Set-Cookie': [
-            `user=${user}; Path=/;  max-age=${cookieExpiration}`,
+            `user=${userInfoInStringify}; Path=/;  max-age=${cookieExpiration}`,
           ] as any,
            
         }

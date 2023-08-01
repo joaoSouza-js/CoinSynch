@@ -26,6 +26,17 @@ export function ImagesCarrousel({images}:ImagesCarrouselProps){
         },
         
       )
+
+      let hasScrolled = false;
+
+    function handleScroll() {
+        if (!hasScrolled) {
+          instanceRef.current?.next()
+          console.log('User has scrolled for the first time!');
+          hasScrolled = true;
+        }
+    }
+    window.addEventListener('scroll', handleScroll);
  
     
 
