@@ -1,4 +1,4 @@
-'use client'
+
 import Image from 'next/image'
 import {Button} from '@/components/Button'
 import Logo from '@/assets/Logo.svg'
@@ -13,8 +13,83 @@ import { NewsLetterForm } from '@/components/NewsLetterForm'
 import { ImagesCarrousel } from '@/components/ImagesCarrousel'
 import { SignUpModal } from '@/components/signUpModal'
 import { SignInModal } from '@/components/signInModal'
+import axios from 'axios'
+import { CoinsTable } from '@/components/CoinsTable'
 
-export default function Home() {
+export const revalidate = 30 
+
+
+interface Coin  {
+  id: number,
+  name: string,
+  symbol: string
+  slug: string,
+  quote: {
+    USD: {
+      percent_change_1h: number,
+      price: number,
+      percent_change_24h: number
+    }
+  }
+}
+
+interface CoinImagesResponse {
+  data:   {
+    id: number;
+    logo: string;
+  }[];
+}
+
+export default async function Home() {
+  const coinsResponse =  await axios.get<{
+    data: Coin[]
+  }>('https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',{
+    params: {
+      start: 1,
+      limit: 10,
+      convert: 'USD'
+    },
+    headers: {
+      'X-CMC_PRO_API_KEY': process.env.NEXT_PUBLIC_COIN_MARKET_API_KEY
+    }
+  })
+  const Coins =   coinsResponse.data.data
+
+  const CoinsOnlyId =  Coins.map(coin => coin.id).join(',')
+
+  const coinsImagesResponse = await axios.get< CoinImagesResponse >(
+    'https://pro-api.coinmarketcap.com/v2/cryptocurrency/info',
+    {
+      params: {
+        id: CoinsOnlyId
+      },
+      headers: {
+        'X-CMC_PRO_API_KEY': process.env.NEXT_PUBLIC_COIN_MARKET_API_KEY
+      }
+    }
+  );
+  
+  const coinImagesData = coinsImagesResponse.data.data;
+  
+  
+
+  const CoinsWithLogoImage=   Coins.map(coin => {
+    const  CoinImage = coinImagesData[coin.id]
+    
+
+    return {
+      ...coin,
+      url: CoinImage.logo 
+    }
+  })
+
+  console.log(CoinsWithLogoImage[0].quote)
+
+
+ 
+  
+
+
   return (
    <div>
     <header className=' py-4 px-4 flex justify-center fixed top-0   w-full text-sm bg-white z-10'>
@@ -161,37 +236,11 @@ export default function Home() {
       
     </section>
 
-    <section className='max-w-7xl mx-auto px-6 '>
-      <h2>Top Cryptos</h2>
-      <table className='w-full table-auto border-collapse'>
-        <thead className='text-left' >
-            <tr >
-                <th className='px-6'>#</th>
-                <th>Crypto</th>
-                <th className='px-6'>Price</th>
-                <th className='px-6'>Change</th>
-                <th className=' text-center px-6' >trade</th>
-            </tr>
+     
+      <CoinsTable coins={CoinsWithLogoImage}/>
+    
 
-        </thead>
-        <tbody  >
-            <tr >
-                <td className='p-6' >01</td>
-                <td className='p-6'>Bitcoin BTC</td>
-                <td className='p-6'>US$ 25.499,52</td>
-                <td className='p-6' >+5,65%</td>
-                <td className='text-center p-6'>
-                  <Button className='w-20 mx-auto' size='small' variant='secondary'>Buy</Button>
-                </td>
-            </tr>
-           
-
-             
-        </tbody>
-      </table>
-    </section>
-
-    <section className='bg-yellow-600 px-6  py-32 flex justify-center  relative'>
+    <section className='bg-yellow-600 mt-32 px-6  py-32 flex justify-center  relative'>
       <div className='flex w-full justify-between max-w-5xl'>
         <div className='text-white z-10'>
           <h2 className='font-bold text-2xl text-yellow-200'>
