@@ -15,23 +15,10 @@ import { SignUpModal } from '@/components/signUpModal'
 import { SignInModal } from '@/components/signInModal'
 import axios from 'axios'
 import { CoinsTable } from '@/components/CoinsTable'
+import { CoinProps } from '@/DTO/COIN_DTO'
+import { getCoins } from '@/utils/getCoins'
 
 export const revalidate = 30 
-
-
-interface Coin  {
-  id: number,
-  name: string,
-  symbol: string
-  slug: string,
-  quote: {
-    USD: {
-      percent_change_1h: number,
-      price: number,
-      percent_change_24h: number
-    }
-  }
-}
 
 interface CoinImagesResponse {
   data:   {
@@ -41,55 +28,8 @@ interface CoinImagesResponse {
 }
 
 export default async function Home() {
-  const coinsResponse =  await axios.get<{
-    data: Coin[]
-  }>('https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',{
-    params: {
-      start: 1,
-      limit: 10,
-      convert: 'USD'
-    },
-    headers: {
-      'X-CMC_PRO_API_KEY': process.env.NEXT_PUBLIC_COIN_MARKET_API_KEY
-    }
-  })
-  const Coins =   coinsResponse.data.data
-
-  const CoinsOnlyId =  Coins.map(coin => coin.id).join(',')
-
-  const coinsImagesResponse = await axios.get< CoinImagesResponse >(
-    'https://pro-api.coinmarketcap.com/v2/cryptocurrency/info',
-    {
-      params: {
-        id: CoinsOnlyId
-      },
-      headers: {
-        'X-CMC_PRO_API_KEY': process.env.NEXT_PUBLIC_COIN_MARKET_API_KEY
-      }
-    }
-  );
+  const CoinsWithLogoImage  = await getCoins({include_images:true})
   
-  const coinImagesData = coinsImagesResponse.data.data;
-  
-  
-
-  const CoinsWithLogoImage=   Coins.map(coin => {
-    const  CoinImage = coinImagesData[coin.id]
-    
-
-    return {
-      ...coin,
-      url: CoinImage.logo 
-    }
-  })
-
-  console.log(CoinsWithLogoImage[0].quote)
-
-
- 
-  
-
-
   return (
    <div>
     <header className=' py-4 px-4 flex justify-center fixed top-0   w-full text-sm bg-white z-10'>
