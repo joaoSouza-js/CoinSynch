@@ -76,6 +76,7 @@ export async function GET(request: Request, response: NextResponse) {
             email: email,
         },
         select: {
+            id: true,
             name: true,
             email: true,
         },

@@ -41,6 +41,7 @@ export async function POST(request: NextResponse,response: NextApiResponse){
     }
 
     const userInfo = {
+        id: user.id,
         email: user.email,
         name: user.name
     }

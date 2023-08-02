@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-import { cookies } from "next/headers";
 
 interface UserProps {
     name: string;
@@ -7,8 +6,9 @@ interface UserProps {
     id: string;
 }
 
-export function getUser(){
-    const userInStringify = cookies().get('user')?.value;
+
+export function getUserInClientSide(){
+    const userInStringify = Cookies.get('user')
     
     if(!userInStringify) return undefined;
 
@@ -16,5 +16,4 @@ export function getUser(){
 
 
     return user
-
 }

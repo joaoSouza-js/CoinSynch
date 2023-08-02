@@ -20,8 +20,19 @@ model Subscriber {
 model User {
   id        String   @id @default(uuid())
   name  String 
-  email String @unique
+    email String @unique
   password String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  coins     Coin[]   // Campo de relação oposto no modelo User
+}
+
+model Coin {
+  id        String   @id @default(uuid())
+  coinId       Int 
+  name     String
+  amount Float
+  url      String
+  owner    User    @relation(fields: [ownerId], references: [id])// Campo de relação oposto no modelo Coin
+  ownerId String
 }

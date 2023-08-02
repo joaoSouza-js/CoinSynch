@@ -1,20 +1,28 @@
+
+
 import WalletSvg from '@/assets/wallet.svg'
-import { Button } from '@/components/Button'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
 import { WalletEmpty } from './WalletEmpty'
-import { ComponentProps } from 'react'
-import { cn } from '@/libs/cn'
 import { AddCryptoModal } from './AddCryptoModal'
-import { getCoins } from '@/utils/getCoins'
+import { SignInModal } from '@/components/signInModal'
+import { CoinProps } from '@/DTO/COIN_DTO'
+import { getUser } from '@/utils/user'
+import { cn } from '@/libs/cn'
 
 interface WalletProps {
     className?: string
+    coins: CoinProps[],
+    userIsLoggedIn?: boolean
 }
 
-export async  function Wallet({className}: WalletProps){
-    const coins = await getCoins({include_images:true})
+export   function Wallet({className,coins,}: WalletProps){
+    const user = getUser()
+    const userIsLoggedIn = !!user
+
     const userCoins: string[] = []
+
+
     return (
         
         <section className={cn('shadow-md  bg-white min-h-[28rem] flex flex-col rounded-lg ',className)}>
@@ -33,12 +41,26 @@ export async  function Wallet({className}: WalletProps){
                     
                 </div>
 
-                <AddCryptoModal 
+                {
+                  userIsLoggedIn ? (
+                    <AddCryptoModal 
                     coins={coins}
                  className='flex gap-2  w-max'>
                     <PlusIcon className='w-4 h-4'/>
                     Add crypto
-                </AddCryptoModal>
+                     </AddCryptoModal>
+                  )
+                  : (
+                    <SignInModal 
+                        
+                         className='flex gap-2  w-max'
+                    >
+                        <PlusIcon className='w-4 h-4'/>
+                        Add crypto
+                    </SignInModal>
+
+                  )
+                }
             </div>
 
         {

@@ -4,9 +4,13 @@ import WalletSvg from '@/assets/wallet.svg'
 import { Button } from '@/components/Button'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import { Wallet } from './components/Wallet'
+import { getCoins } from '@/utils/getCoins'
+import { getUser } from '@/utils/user'
 
 
-export default function Dashboard(){
+export default async function Dashboard(){
+    const coins = await getCoins({include_images:true})
+    
     
     return (
         <div className='w-full max-w-[1216px] mx-auto p-6 pt-4'>
@@ -36,7 +40,7 @@ export default function Dashboard(){
                 <div className='bg-red-600 h-9'></div>
             </header>
             
-            <Wallet className='mt-8'/>
+            <Wallet  coins={coins} className='mt-8'/>
 
         </div>
     )

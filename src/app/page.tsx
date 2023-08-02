@@ -61,7 +61,7 @@ export default async function Home() {
             <span>BIT </span>
           </div>
           <div className='flex  items-center gap-x-6'>
-            <SignInModal unstyled  className='min-w-fit'>
+            <SignInModal redirect='/dashboard' unstyled  className='min-w-fit'>
                   Sign in   
             </SignInModal>
             <SignUpModal className='py-2'>

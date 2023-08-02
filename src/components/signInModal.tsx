@@ -13,8 +13,10 @@ import { TextInput } from './TextInput'
 import { DialogPortal } from './DialogPortal'
 import axios, { AxiosError, isAxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
-interface SignModalProps extends ButtonProps {
-    unstyled?: boolean
+import { useState } from 'react'
+interface SignModalProps extends ButtonProps, Dialog.DialogProps {
+    unstyled?: boolean,
+    redirect?: string,
 }
 
 const SignInFormSchema = z.object({
@@ -24,17 +26,13 @@ const SignInFormSchema = z.object({
 
 type SignInFormSchemaData = z.input<typeof SignInFormSchema>
 
-export function SignInModal({unstyled=false,className,children, ...rest}: SignModalProps){
-
+export function SignInModal({unstyled=false,className,children,redirect,open, ...rest}: SignModalProps){
+    const [modalIsOpen, setModalIsOpen] = useState(open)
     const {formState,register, handleSubmit,} = useForm<SignInFormSchemaData>({
         resolver: zodResolver(SignInFormSchema)
     })
 
     const router = useRouter()
-
-  
-
-    
 
     const { errors, isSubmitting} = formState
 
@@ -45,11 +43,10 @@ export function SignInModal({unstyled=false,className,children, ...rest}: SignMo
                 email: formData.email,
                 password: formData.password,
             })
+            if(redirect) return router.push(redirect)
 
-            router.push('/dashboard')
-
-           
-
+            location.reload()
+            
             
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -61,7 +58,7 @@ export function SignInModal({unstyled=false,className,children, ...rest}: SignMo
     }
 
     return(
-        <Dialog.Root>
+        <Dialog.Root  open={modalIsOpen} onOpenChange={setModalIsOpen} {...rest}>
             <Dialog.Trigger asChild>
                 {
                     unstyled 
