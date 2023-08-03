@@ -9,6 +9,9 @@ import { SignInModal } from '@/components/signInModal'
 import { CoinProps } from '@/DTO/COIN_DTO'
 import { getUser } from '@/utils/user'
 import { cn } from '@/libs/cn'
+import axios from 'axios'
+import { getUserCoinsCurrentData } from '@/utils/getUserCoins'
+import { UserTableCoin } from './UserTableCoin'
 
 interface WalletProps {
     className?: string
@@ -16,12 +19,37 @@ interface WalletProps {
     userIsLoggedIn?: boolean
 }
 
-export   function Wallet({className,coins,}: WalletProps){
+interface UserCoin {
+    id: string;
+    coinId: number;
+    name: string;
+    amount: number;
+    url: string;
+}
+
+export async  function Wallet({className,coins,}: WalletProps){
     const user = getUser()
     const userIsLoggedIn = !!user
 
-    const userCoins: string[] = []
+    async function fetchUserCoins() {
+        const userCoinsEmpty = [] as UserCoin[]
 
+        if(userIsLoggedIn){
+            try {
+                const response =  await axios.get<{coins: UserCoin[]}>(`http://localhost:3000/api/coin/${user.id}`)
+                
+                return response.data.coins    
+            } catch (error) {
+                console.log(error)
+                return userCoinsEmpty
+            }
+        }
+        
+        return userCoinsEmpty
+    }
+
+    const userCoins = await fetchUserCoins()
+    const userCoinsCurrentData = await getUserCoinsCurrentData(userCoins)
 
     return (
         
@@ -64,8 +92,9 @@ export   function Wallet({className,coins,}: WalletProps){
             </div>
 
         {
-            userCoins.length ? (<></>)
+            userCoins.length && userIsLoggedIn ? (<UserTableCoin coins={userCoinsCurrentData}/>)
             : <WalletEmpty/>
+            
         }
     </section>
     )

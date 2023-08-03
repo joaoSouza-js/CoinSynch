@@ -1,9 +1,9 @@
 import { prisma } from "@/services/prisma";
-import { NextApiResponse } from "next";
-import { NextResponse } from "next/server";
+import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-export async function POST(request: NextResponse,response: NextApiResponse){
+export async function POST(request: NextRequest,response: NextApiResponse){
     const coinSchema = z.object({
         amount: z.number({required_error: 'Amount not informed'}),
         coinId: z.coerce.number({required_error: 'CoinId not informed'}),
@@ -61,11 +61,38 @@ export async function POST(request: NextResponse,response: NextApiResponse){
 
     return NextResponse.json({})
 
+
+}
+
+export async function  GET(request:NextRequest ) {
+    const { searchParams } = new URL(request.url)
+
+    const userId = searchParams.get('userId') 
+
+    if (!userId) {
+        return new NextResponse("Inform the user id", {
+            status: 404,
+        });
+    }
+
+    console.log(userId)
     
-    
+    const user = await prisma.user.findUnique({
+        where: {id: userId},
+        include: {
+            coins: true
+        }
+    })
 
+    if (!user) {
+        return new NextResponse("cant't find the user", {
+            status: 404,
+        });
+    }
 
+    console.log(user)
 
-
-
+    return NextResponse.json({
+        coins: []
+    })
 }
