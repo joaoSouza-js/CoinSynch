@@ -14,10 +14,12 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { addNewCoinProps } from './Wallet'
 
 
 interface AddCryptoModalProps extends  ButtonProps {
-    coins: CoinProps[]
+    coins: CoinProps[],
+    addNewCoin: (props: addNewCoinProps) => Promise<void>
 }
 
 const RegisterNewCoinSchema = z.object({
@@ -27,7 +29,7 @@ const RegisterNewCoinSchema = z.object({
 
 type RegisterNewCoinSchemaData = z.input<typeof RegisterNewCoinSchema>
 
-export function  AddCryptoModal({ coins, ...rest}: AddCryptoModalProps){
+export function  AddCryptoModal({ coins,addNewCoin, ...rest}: AddCryptoModalProps){
     const [modalIsOpen, setModalIsOpen] = useState(false)
     const [SelectIsVisible, setSelectIsVisible] = useState(false)
     const {formState, control, register, handleSubmit,reset} = useForm<RegisterNewCoinSchemaData>({
@@ -48,15 +50,14 @@ export function  AddCryptoModal({ coins, ...rest}: AddCryptoModalProps){
         }
 
         try {
-            await axios.post('/api/coin', {
-                amount: formData.amount,
+            await addNewCoin({
+                amount: formData.amount as number,
                 coinId: formData.coinId,
                 name: coin.name,
-                url: coin.url,
+                url: coin.url as string,
                 userId: user.id
-        
             })
-
+           
             setModalIsOpen(false)
 
         } catch (error) {
@@ -153,7 +154,7 @@ export function  AddCryptoModal({ coins, ...rest}: AddCryptoModalProps){
 
 
                         <TextInput.Root >
-                            <TextInput.Input {...register('amount')} defaultValue={0.1} type='number'/>
+                            <TextInput.Input step={0.01} {...register('amount')} defaultValue={0.1} type='number'/>
                             {
                                 errors.amount  && (
                                     <TextInput.Error>{errors.amount.message}</TextInput.Error>

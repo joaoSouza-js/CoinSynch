@@ -6,10 +6,48 @@ import { PlusIcon } from '@heroicons/react/24/solid'
 import { Wallet } from './components/Wallet'
 import { getCoins } from '@/utils/getCoins'
 import { getUser } from '@/utils/user'
+import { getUserCoinsCurrentData } from '@/utils/getUserCoins'
+
+interface UserCoin {
+    id: string;
+    coinId: number;
+    name: string;
+    amount: number;
+    url: string;
+}
 
 
 export default async function Dashboard(){
+
+    const user = getUser()
+    const userIsLoggedIn = !!user?.id
+
+    async function fetchUserCoins() {
+        const userCoinsEmpty = [] as UserCoin[]
+        
+        if(!userIsLoggedIn){
+            return userCoinsEmpty
+        }
+
+       
+        try {
+            const response =  await fetch(`http://localhost:3000/api/coin/${user.id}`,{
+                cache: 'no-cache'
+            })
+            const data: {coins: UserCoin[]} = await response.json()
+           
+            return data.coins    
+        } catch (error) {
+            console.log(error)
+            return userCoinsEmpty
+        }
+        
+        
+    }
+
     const coins = await getCoins({include_images:true})
+    const userCoins = await fetchUserCoins()
+    const userCoinsCurrentData = await getUserCoinsCurrentData(userCoins)
     
     
     return (
@@ -40,7 +78,12 @@ export default async function Dashboard(){
                 <div className='bg-red-600 h-9'></div>
             </header>
             
-            <Wallet  coins={coins} className='mt-8'/>
+            <Wallet
+                coins={coins}
+                userIsLoggedIn={userIsLoggedIn}
+                userCoins={userCoinsCurrentData}
+             className='mt-8'
+             />
 
         </div>
     )

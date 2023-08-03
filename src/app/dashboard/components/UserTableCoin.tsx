@@ -5,18 +5,19 @@ import TranferSvg from '@/assets/tranfer.svg'
 import { CoinProps,  } from "@/DTO/COIN_DTO";
 import { Tooltip } from "./Tooltip";
 import { FormatPercentage, FormatPrice } from "@/utils/format";
+import { TransferCryptoModal } from "./TransferCryptoModal";
+import { useState } from "react";
+import { TransferCoinProps } from "./Wallet";
 
 
 interface UserTableCoinProps {
-    coins: CoinProps[];
-}
+    userCoins: CoinProps[];
+    TransferCoin: (props: TransferCoinProps) => Promise<void>}
 
 
-export function UserTableCoin({coins}:UserTableCoinProps){
-
+export function UserTableCoin({userCoins,TransferCoin}:UserTableCoinProps){
     return (
         <section className='w-full mx-auto px-6 '>
-            <h2 className="text-gray-700 font-bold text-[2rem] text-center">Top Cryptos</h2>
             <table className='w-full mt-12 table-auto border-collapse'>
                 <thead className='text-left text-gray-700' >
                     <tr  className=" text-gray-700" >
@@ -29,7 +30,7 @@ export function UserTableCoin({coins}:UserTableCoinProps){
 
                 </thead>
                 <tbody  >
-                    {coins.map((coin,index) => (
+                    {userCoins.map((coin,index) => (
                         <tr key={coin.id} >
                             <td className='h-16 px-6 ' >{String(index +1).padStart(2,'0')}</td>
                             <td className='h-16 py-6  '>
@@ -43,24 +44,32 @@ export function UserTableCoin({coins}:UserTableCoinProps){
                                 </div>
                             </td>
                             <td className='h-16 p-6'>
-                                    <span className="block">US{FormatPrice.format(coin.quote.USD.price)}</span>
-                                    <span className="text-yellow-500 block mt-1 text-xs"> 432 {coin.symbol}</span>
+                                    {
+                                        coin.amount && (
+                                            <>
+                                            <span className="block">US{FormatPrice.format(coin.quote.USD.price * coin.amount )}</span>
+                                            <span className="text-yellow-500 block mt-1 text-xs"> {coin.amount} {coin.symbol}</span>
+                                            </>
+
+                                        )
+                                    }
                             </td>
                             <td className={`h-16 p-6 ${coin.quote.USD.percent_change_24h > 0 ? 'text-green-500' : 'text-red-500'}`} > {FormatPercentage.format(coin.quote.USD.percent_change_1h)}</td>
                             <td className='h-16 text-center p-6 text-end'>
-                                <Tooltip
-                                    onClick={e => console.log('oi mundo')}
-                                     label="tranfer crypto" 
-                                     className='text-red-300' 
-                                >
-                                <Image
-                                    src={TranferSvg}
-                                    alt=""
-                                    className='w-4 h-4'
-                                    width={16}
-                                    height={16}
-                                />
-                                </Tooltip>
+                                <TransferCryptoModal  TransferCoin={TransferCoin} coinSelected={coin} >
+                                    <Tooltip
+                                        label="tranfer crypto" 
+                                        className='text-red-300' 
+                                    >
+                                    <Image
+                                        src={TranferSvg}
+                                        alt=""
+                                        className='w-4 h-4'
+                                        width={16}
+                                        height={16}
+                                    />
+                                    </Tooltip>
+                                </TransferCryptoModal>
                             </td>
                         </tr>
 

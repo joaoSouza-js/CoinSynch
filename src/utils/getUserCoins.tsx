@@ -1,5 +1,6 @@
 import { CoinProps } from "@/DTO/COIN_DTO";
 import axios from "axios";
+import { getUser } from "./user";
 
 
 
@@ -17,6 +18,13 @@ interface UserCoin {
 
 
 export async  function getUserCoinsCurrentData(userCoins:UserCoin[]){
+
+    const userIsLoggedIn = !!getUser()
+
+    if(!userIsLoggedIn || !userCoins.length){
+      return [] as CoinProps[]
+    }
+  
     
     const userCoinsOnlyIdString =  userCoins.map(coin => coin.coinId).join(',')
     
@@ -34,10 +42,11 @@ export async  function getUserCoinsCurrentData(userCoins:UserCoin[]){
       const CoinsQuoteArray = Object.values(CoinsQuote)
 
       const CoinsQuoteCurrentData = CoinsQuoteArray.map(coinQuote => {
-            const url = userCoins.find(coin => coin.coinId === coinQuote.id)
+            const coin = userCoins.find(coin => coin.coinId === coinQuote.id)
             return {
                 ...coinQuote,
-                url: url?.url
+                amount: coin?.amount,
+                url: coin?.url
             }
       })
 

@@ -1,4 +1,4 @@
-
+'use client'
 
 import WalletSvg from '@/assets/wallet.svg'
 import { PlusIcon } from '@heroicons/react/24/solid'
@@ -12,44 +12,103 @@ import { cn } from '@/libs/cn'
 import axios from 'axios'
 import { getUserCoinsCurrentData } from '@/utils/getUserCoins'
 import { UserTableCoin } from './UserTableCoin'
+import { getCoins } from '@/utils/getCoins'
+import { getUserInClientSide } from '@/utils/userInClientSide'
+import { useState } from 'react'
 
 interface WalletProps {
-    className?: string
-    coins: CoinProps[],
-    userIsLoggedIn?: boolean
+    className?: string,
+    coins: CoinProps[]
+    userCoins: CoinProps[]  
+    userIsLoggedIn: boolean
 }
 
-interface UserCoin {
-    id: string;
-    coinId: number;
-    name: string;
-    amount: number;
-    url: string;
+
+export interface addNewCoinProps {
+    amount: number,
+    coinId: number,
+    name: string,
+    url: string,
+    userId: string,
 }
 
-export async  function Wallet({className,coins,}: WalletProps){
-    const user = getUser()
-    const userIsLoggedIn = !!user
+export interface TransferCoinProps {
+    amount: number,
+    coinId: number,
+    userId:string,
+    isTransferIn: boolean
+}
 
-    async function fetchUserCoins() {
-        const userCoinsEmpty = [] as UserCoin[]
+export   function Wallet({className,coins,userCoins:user_coins,userIsLoggedIn}: WalletProps){
+    const [userCoins,setUserCoins] = useState(user_coins)
 
-        if(userIsLoggedIn){
-            try {
-                const response =  await axios.get<{coins: UserCoin[]}>(`http://localhost:3000/api/coin/${user.id}`)
-                
-                return response.data.coins    
-            } catch (error) {
-                console.log(error)
-                return userCoinsEmpty
-            }
-        }
+    async function handleAddNewCoin({amount,coinId,name,url,userId}:addNewCoinProps){
+        try {
+            await axios.post('/api/coin', {
+                amount: amount,
+                coinId: coinId,
+                name: name,
+                url: url,
+                userId: userId,
         
-        return userCoinsEmpty
+            })
+
+            const coin = coins.find(coin => coin.id)
+            
+            if(!coin) return
+
+            const userAlreadyHasCoin = userCoins.some(userCoin => userCoin.id === coinId)
+
+            if(userAlreadyHasCoin) {
+                const coinWithCoinUpdated = userCoins.map(userCoin => {
+                    if(userCoin.id ===  coin.id) {
+                        
+                        return {
+                            ...userCoin,
+                            amount: userCoin.amount ? userCoin.amount + amount : 0,
+                        }
+                    }
+                    return userCoin
+                })
+
+                setUserCoins(coinWithCoinUpdated)
+
+            }
+
+            const userCoinsWithMoreOneCoin  = [...userCoins,coin]
+
+            setUserCoins(userCoinsWithMoreOneCoin)
+    
+        } catch (error) {
+            throw error
+        }
+
     }
 
-    const userCoins = await fetchUserCoins()
-    const userCoinsCurrentData = await getUserCoinsCurrentData(userCoins)
+    async function handleTransferCoin({amount,coinId,userId,isTransferIn}:TransferCoinProps){
+        try {
+            const response = await axios.put<{
+                isDeleted: boolean
+            }>('/api/coin',{
+                amount: amount,
+                coinId: coinId,
+                userId: userId,
+                isTransferIn: isTransferIn
+            })
+    
+            const {isDeleted} = response.data
+            
+
+            if(!isDeleted) return 
+    
+            const userCoinsWithOneDeleted = userCoins.filter(coin => coin.id !== coinId )
+    
+            setUserCoins(userCoinsWithOneDeleted)
+            
+        } catch (error) {
+            throw error
+        }
+    }
 
     return (
         
@@ -71,7 +130,8 @@ export async  function Wallet({className,coins,}: WalletProps){
 
                 {
                   userIsLoggedIn ? (
-                    <AddCryptoModal 
+                    <AddCryptoModal
+                    addNewCoin={handleAddNewCoin}
                     coins={coins}
                  className='flex gap-2  w-max'>
                     <PlusIcon className='w-4 h-4'/>
@@ -92,8 +152,14 @@ export async  function Wallet({className,coins,}: WalletProps){
             </div>
 
         {
-            userCoins.length && userIsLoggedIn ? (<UserTableCoin coins={userCoinsCurrentData}/>)
-            : <WalletEmpty/>
+            userCoins.length && userIsLoggedIn ? 
+                (
+                <UserTableCoin
+                    TransferCoin={handleTransferCoin}
+                    userCoins={userCoins} 
+    
+                />)
+                : <WalletEmpty/>
             
         }
     </section>

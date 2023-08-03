@@ -75,12 +75,12 @@ export async function  GET(request:NextRequest ) {
         });
     }
 
-    console.log(userId)
     
     const user = await prisma.user.findUnique({
         where: {id: userId},
         include: {
-            coins: true
+            coins: true,
+            
         }
     })
 
@@ -90,9 +90,98 @@ export async function  GET(request:NextRequest ) {
         });
     }
 
-    console.log(user)
 
     return NextResponse.json({
         coins: []
     })
+}
+
+export async function PUT(request: NextRequest,){
+    const requestBodySchema = z.object({
+        amount: z.number({required_error: 'Amount not informed'}),
+        coinId: z.coerce.number({required_error: 'CoinId not informed'}),
+        userId: z.string({required_error: 'user Id not provided'}).uuid(),
+        isTransferIn: z.coerce.boolean({required_error: 'isTransferIn is not informed'})
+    })
+
+    const req = await request.json();
+
+    const {userId,amount,coinId,isTransferIn} =  requestBodySchema.parse(req)
+
+    if (!userId) {
+        return new NextResponse("Inform the userId", {
+            status: 404,
+        });
+    }
+
+    
+    const user = await prisma.user.findUnique({
+        where: {id: userId},
+        include: {
+            coins: true,
+            
+        }
+    })
+
+    if (!user) {
+        return new NextResponse("cant't find the user", {
+            status: 404,
+        });
+    }
+
+    const coinToUpdate = user.coins.find(coin => coin.coinId === coinId)
+
+
+    if (!coinToUpdate) {
+        return new NextResponse("you don't have this coin yet", {
+            status: 404,
+        });
+    }
+
+    if(isTransferIn){
+        await prisma.coin.update({
+            where: {
+                id: coinToUpdate.id
+            },
+            data: {
+                amount: coinToUpdate.amount + amount
+            }
+        })
+        return NextResponse.json({
+            isDeleted: false
+        })
+    }
+
+    const  deleteCoin = coinToUpdate.amount - amount <= 0
+
+    console.log('deleting coin =>', deleteCoin)
+
+    
+
+    if(deleteCoin){
+        await prisma.coin.delete({
+            where: {
+                id: coinToUpdate.id
+            }
+        })
+
+        return NextResponse.json({
+            isDeleted: true
+        })
+    }
+
+    await prisma.coin.update({
+        where: {
+            id: coinToUpdate.id
+        },
+        data: {
+            amount: coinToUpdate.amount - amount
+        }
+    })
+
+    return NextResponse.json({
+        isDeleted: false
+    })
+
+    
 }

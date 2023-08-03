@@ -1,4 +1,5 @@
 export interface CoinProps {
+    amount?: number,
     url?: string
     id: number,
     name: string,
