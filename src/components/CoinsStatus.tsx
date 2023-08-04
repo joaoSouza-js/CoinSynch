@@ -38,7 +38,7 @@ export function CoinsStatus({coins}:CoinsStatusProps){
     }
 
     useEffect(() => {
-        setInterval(dragToRight, 6500)
+        setInterval(dragToRight, 7000)
     })
 
     

@@ -47,8 +47,8 @@ export function UserTableCoin({userCoins,TransferCoin}:UserTableCoinProps){
                                     {
                                         coin.amount && (
                                             <>
-                                            <span className="block">US{FormatPrice.format(coin.quote.USD.price * coin.amount )}</span>
-                                            <span className="text-yellow-500 block mt-1 text-xs"> {coin.amount} {coin.symbol}</span>
+                                            <span className="block">US {FormatPrice.format(coin.quote.USD.price * coin.amount )}</span>
+                                            <span className="text-yellow-500 block mt-1 text-xs"> { coin.amount.toFixed(4)} {coin.symbol}</span>
                                             </>
 
                                         )

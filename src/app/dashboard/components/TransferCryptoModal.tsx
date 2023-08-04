@@ -136,7 +136,12 @@ export function TransferCryptoModal({children,coinSelected,TransferCoin}:Transfe
 
 
                         <TextInput.Root >
-                            <TextInput.Input step={0.01}  {...register('amount')}  type='number'/>
+                            <TextInput.Input 
+                                step={0.01} 
+                                defaultValue={0.01} 
+                                {...register('amount')}  
+                                type='number'
+                            />
                             {
                                 errors.amount  && (
                                     <TextInput.Error>{errors.amount.message}</TextInput.Error>

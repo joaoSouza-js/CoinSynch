@@ -1,12 +1,13 @@
 import BallanceIcon from '@/assets/ballence.svg'
 import Image from 'next/image'
-import WalletSvg from '@/assets/wallet.svg'
-import { Button } from '@/components/Button'
-import { PlusIcon } from '@heroicons/react/24/solid'
 import { Wallet } from './components/Wallet'
 import { getCoins } from '@/utils/getCoins'
 import { getUser } from '@/utils/user'
 import { getUserCoinsCurrentData } from '@/utils/getUserCoins'
+import { CoinStatics } from './components/CoinStatics'
+import { FormatPercentage, FormatPrice } from '@/utils/format'
+import ElephantImage from '@/assets/elephant.png'
+import Link from 'next/link'
 
 interface UserCoin {
     id: string;
@@ -48,6 +49,14 @@ export default async function Dashboard(){
     const coins = await getCoins({include_images:true})
     const userCoins = await fetchUserCoins()
     const userCoinsCurrentData = await getUserCoinsCurrentData(userCoins)
+
+    
+    const userCoinValues = userCoinsCurrentData.map(coin => coin.amount ? coin.amount * coin.quote.USD.price : 0)
+    const balance = userCoinValues.reduce((acc, value) => acc + value, 0);
+
+    const radomNumber = Math.floor(Math.random() * coins.length)
+
+    const randomCoin = coins[radomNumber]
     
     
     return (
@@ -69,14 +78,29 @@ export default async function Dashboard(){
                     </div>
                     <div className='bg-red-100 flex-grow flex justify-center items-center'>
                         <strong className='text-3xl'>
-                            $32,256.56
+                            {FormatPrice.format(balance)}
                         </strong>
                     </div>
                 </div>
 
-                <div className='bg-red-600 h-9'></div>
-                <div className='bg-red-600 h-9'></div>
+                <CoinStatics coin={randomCoin}/>
+                <div className='grid grid-cols-2 items-center bg-white rounded-md shadow text-xs' >
+                    <div className='p-4'>
+                        <strong>NFT’s NEWS</strong>
+                        <span className='text-gray-500 inline-block mt-1'>New ElephantX NFTto be lauched!  </span>
+                        <Link href={'#'} className='text-yellow-500 mt-4 block'> Read more +</Link>
+                    </div>
+                    <Image
+                        src={ElephantImage}
+                        alt=''
+                        width={140}
+                        height={143}
+                        className='h-full'
+
+                    />
+                </div>
             </header>
+                    
             
             <Wallet
                 coins={coins}

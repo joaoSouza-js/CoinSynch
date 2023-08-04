@@ -8,6 +8,7 @@ export interface CoinProps {
     quote: {
       USD: {
         percent_change_1h: number,
+        percent_change_7d: number
         price: number,
         percent_change_24h: number
       }

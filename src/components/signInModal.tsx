@@ -14,9 +14,12 @@ import { DialogPortal } from './DialogPortal'
 import axios, { AxiosError, isAxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { SignUpModal } from './signUpModal'
 interface SignModalProps extends ButtonProps, Dialog.DialogProps {
     unstyled?: boolean,
     redirect?: string,
+    handleCloseSignUpModal?: () => void
+
 }
 
 const SignInFormSchema = z.object({
@@ -26,11 +29,23 @@ const SignInFormSchema = z.object({
 
 type SignInFormSchemaData = z.input<typeof SignInFormSchema>
 
-export function SignInModal({unstyled=false,className,children,redirect,open, ...rest}: SignModalProps){
+export function SignInModal({unstyled=false,className,children,redirect,open,handleCloseSignUpModal, ...rest}: SignModalProps){
     const [modalIsOpen, setModalIsOpen] = useState(open)
     const {formState,register, handleSubmit,} = useForm<SignInFormSchemaData>({
         resolver: zodResolver(SignInFormSchema)
     })
+
+    function handleCloseSignInModal(){
+        setModalIsOpen(false)
+    }
+
+    function handleSignInModalChange(state:boolean){
+        if(modalIsOpen && !!handleCloseSignUpModal){
+            handleCloseSignUpModal()
+        }
+        setModalIsOpen(state)
+        
+    }
 
     const router = useRouter()
 
@@ -58,7 +73,7 @@ export function SignInModal({unstyled=false,className,children,redirect,open, ..
     }
 
     return(
-        <Dialog.Root  open={modalIsOpen} onOpenChange={setModalIsOpen} {...rest}>
+        <Dialog.Root  open={modalIsOpen} onOpenChange={handleSignInModalChange} {...rest}>
             <Dialog.Trigger asChild>
                 {
                     unstyled 
@@ -73,7 +88,7 @@ export function SignInModal({unstyled=false,className,children,redirect,open, ..
                     className='flex flex-col gap-6'
                 >
                     <Dialog.Title  className='text-2xl text-center leading-tight'>
-                        Sign up to 
+                        Sign in to 
                         <span className='font-bold text-yellow-500'> Coin</span>
                         <span className='font-bold text-gray-500'>Synch</span>
                     </Dialog.Title>
@@ -120,10 +135,15 @@ export function SignInModal({unstyled=false,className,children,redirect,open, ..
                     </Button>
                     <footer className='text-center' >
                         <span>
-                            Don’t have an account?   
-                            <Link href={'#'}  className=' text-center leading-tight underline mx-1'>
-                                 Sign up 
-                            </Link >
+                            Don’t have an account?  
+
+                            <SignUpModal  handleCloseSignInModal={handleCloseSignInModal}  unstyled={true}>
+                                <button className='font-bold mx-px'>
+                                    SignUp
+
+                                </button>
+                            </SignUpModal>
+
                             <span className='font-bold text-yellow-500'>to  Coin</span>
                             <span className='font-bold text-gray-500'>Synch</span>
                         </span>

@@ -72,6 +72,8 @@ export   function Wallet({className,coins,userCoins:user_coins,userIsLoggedIn}: 
                 })
 
                 setUserCoins(coinWithCoinUpdated)
+                
+                return
 
             }
 
@@ -99,11 +101,25 @@ export   function Wallet({className,coins,userCoins:user_coins,userIsLoggedIn}: 
             const {isDeleted} = response.data
             
 
-            if(!isDeleted) return 
+            if(isDeleted) {
+                const userCoinsWithOneDeleted = userCoins.filter(coin => coin.id !== coinId )
+                setUserCoins(userCoinsWithOneDeleted)
+                return
+            } 
+
+            const coinWithCoinUpdated = userCoins.map(userCoin => {
+                if(userCoin.id ===  coinId) {
+                    
+                    return {
+                        ...userCoin,
+                        amount: userCoin.amount ? userCoin.amount - amount : 0,
+                    }
+                }
+                return userCoin
+            })
+
+            setUserCoins(coinWithCoinUpdated)
     
-            const userCoinsWithOneDeleted = userCoins.filter(coin => coin.id !== coinId )
-    
-            setUserCoins(userCoinsWithOneDeleted)
             
         } catch (error) {
             throw error
@@ -112,7 +128,7 @@ export   function Wallet({className,coins,userCoins:user_coins,userIsLoggedIn}: 
 
     return (
         
-        <section className={cn('shadow-md  bg-white min-h-[28rem] flex flex-col rounded-lg ',className)}>
+        <section className={cn('shadow-md w-full  bg-white min-h-[28rem] flex flex-col rounded-lg ',className)}>
             <div className='flex justify-between px-6 py-6 border-b-gray-100 border-b'>
                 <div className='flex gap-x-4'>
                     <Image

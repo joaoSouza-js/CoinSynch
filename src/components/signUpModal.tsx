@@ -14,9 +14,12 @@ import  {Button, ButtonProps } from './Button';
 import { TextInput } from './TextInput';
 import { DialogPortal } from './DialogPortal';
 import { useRouter } from 'next/navigation'
+import { useState } from 'react';
+import { SignInModal } from './signInModal';
 
 interface SignUpModalProps  extends ButtonProps{
-    unstyled?: boolean
+    unstyled?: boolean,
+    handleCloseSignInModal?: () => void
 }
 
 const { passwordErrorMessage, Regex: passwordRegex } = PasswordRegex
@@ -39,13 +42,27 @@ const NewUserFormSchema = z.object({
 
 type NewUserFormSchemaData = z.input<typeof NewUserFormSchema>
 
-export function SignUpModal({unstyled,children, ...rest}:SignUpModalProps){
-
+export function SignUpModal({unstyled,children,handleCloseSignInModal, ...rest}:SignUpModalProps){
+    const [modalIsOpen,setModalIsOpen] = useState(false)
     const router = useRouter()
 
-    const {formState, control, register, handleSubmit,watch} = useForm<NewUserFormSchemaData>({
+    const {formState, control, register, handleSubmit} = useForm<NewUserFormSchemaData>({
         resolver: zodResolver(NewUserFormSchema)
     })
+
+    function handleSignUpModalChange(state:boolean){
+        if(modalIsOpen && !!handleCloseSignInModal){
+            handleCloseSignInModal()
+        }
+        setModalIsOpen(state)
+        
+    }
+
+    function closeSignUpModal(){
+        setModalIsOpen(false)
+    }
+
+
     
     const { errors, isSubmitting} = formState
 
@@ -65,9 +82,11 @@ export function SignUpModal({unstyled,children, ...rest}:SignUpModalProps){
             }
         }
     }
+
+    
     
     return (
-        <Dialog.Root>
+        <Dialog.Root open={modalIsOpen} onOpenChange={handleSignUpModalChange} >
             <Dialog.Trigger asChild>
                 {
                     unstyled 
@@ -189,6 +208,22 @@ export function SignUpModal({unstyled,children, ...rest}:SignUpModalProps){
                     >
                         Sign in
                     </Button>
+
+                    <footer className='text-center' >
+                        <span>
+                            Already have and account?     
+
+                            <SignInModal  handleCloseSignUpModal={closeSignUpModal}  unstyled={true}>
+                                <button className='font-bold mx-1'>
+                                    SignIn
+
+                                </button>
+                            </SignInModal>
+
+                            <span className='font-bold text-yellow-500'>to  Coin</span>
+                            <span className='font-bold text-gray-500'>Synch</span>
+                        </span>
+                    </footer>
 
                  
                     

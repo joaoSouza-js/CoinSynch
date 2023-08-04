@@ -10,7 +10,7 @@ import Image from "next/image"
 
 export function SideBar(){
     return (
-        <div className="bg-white shadow-lg mt-px py-11 pl-6 pr-8 h-full flex flex-col  gap-y-8 ">
+        <div className="bg-white  shadow-lg mt-px py-11 pl-6 pr-8  flex flex-col  gap-y-8 ">
             <Tooltip
           
                 label="carteira"

@@ -210,6 +210,11 @@ export default async function Home() {
 
     </section>
 
+    <footer className=' mx-auto p-6 items-center flex justify-around'>
+          <span className='text-gray-700'>Copyright © 2022 -  All rights reserved</span>
+          <Image className='w-24' src={Logo} alt=''/>
+    </footer>
+
     
    </div>
   )
