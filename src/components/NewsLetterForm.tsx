@@ -1,7 +1,7 @@
 'use client'
 
 import { z } from "zod";
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -15,16 +15,24 @@ const newsLetterSchema  = z.object({
 type newsLetterSchemaData = z.input<typeof newsLetterSchema>
 
 export function NewsLetterForm(){
-    const {formState,register, handleSubmit} = useForm<newsLetterSchemaData>({
+    const {formState,register, handleSubmit,reset} = useForm<newsLetterSchemaData>({
         resolver: zodResolver(newsLetterSchema)
     })
     const { errors, isSubmitting} = formState
 
     async function handleSubscribeEmail(formData:newsLetterSchemaData) {
-        const response = await axios.post('/api/subscribe',{
-            email: 'lari2g@gmail.com',
-        })
-        console.log(response.data)
+        try {
+            await axios.post('/api/subscribe',{
+                email: formData.email,
+            })
+
+            reset()
+            
+        } catch (error) {
+            if(axios.isAxiosError(error)) {
+                alert(error.response?.data)
+            }
+        }
     }
     return (
         <form 

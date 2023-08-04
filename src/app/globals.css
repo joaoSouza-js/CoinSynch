@@ -32,4 +32,11 @@ body, input, input, button {
   box-shadow: 0px 0px 0px 2px #5F5C6B;
 }
 
+html {
+  @media (max-width: 768px ) {
+    font-size: 85%;
+    /* Your CSS styles specific to screens smaller than 800px go here */
+  }
+}
+
 

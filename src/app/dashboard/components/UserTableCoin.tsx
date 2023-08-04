@@ -54,7 +54,9 @@ export function UserTableCoin({userCoins,TransferCoin}:UserTableCoinProps){
                                         )
                                     }
                             </td>
-                            <td className={`h-16 p-6 ${coin.quote.USD.percent_change_24h > 0 ? 'text-green-500' : 'text-red-500'}`} > {FormatPercentage.format(coin.quote.USD.percent_change_1h)}</td>
+                            <td className={`h-16 p-6 ${coin.quote.USD.percent_change_24h > 0 ? 'text-green-500' : 'text-red-500'}`} > 
+                                {FormatPercentage.format(coin.quote.USD.percent_change_1h / 100).replace('-','')}
+                            </td>
                             <td className='h-16 text-center p-6 text-end'>
                                 <TransferCryptoModal  TransferCoin={TransferCoin} coinSelected={coin} >
                                     <Tooltip

@@ -5,6 +5,7 @@ import { Button } from "@/components/Button";
 import { FormatPercentage, FormatPrice } from "@/utils/format";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 
@@ -45,9 +46,9 @@ export function CoinsTable({coins}:CoinsTableProps){
                                 </span>
                             </td>
                             <td className='p-6'>US$ {FormatPrice.format(coin.quote.USD.price)}</td>
-                            <td className={`p-6 ${coin.quote.USD.percent_change_24h > 0 ? 'text-green-500' : 'text-red-500'}`} > {FormatPercentage.format(coin.quote.USD.percent_change_1h)}</td>
+                            <td className={`p-6 ${coin.quote.USD.percent_change_24h > 0 ? 'text-green-500' : 'text-red-500'}`} > {FormatPercentage.format(coin.quote.USD.percent_change_1h / 100).replace('-','')}</td>
                             <td className='text-center p-6'>
-                                <Button className='w-20 mx-auto' size='small' variant='secondary'>Buy</Button>
+                                <Link className="px-4 py-2 w-20  rounded-[32px] text-sm text-white bg-green-500 hover:bg-green-600 transition-all" href={'/dashboard'} >Buy</Link>
                             </td>
                         </tr>
 
@@ -65,7 +66,7 @@ export function CoinsTable({coins}:CoinsTableProps){
                     {
                         showAll ?  (
                             <>
-                                View less <MinusIcon className="w-3 h-3"/>
+                                View less
                             </>
                         )
                         : (

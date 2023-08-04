@@ -17,6 +17,7 @@ import axios from 'axios'
 import { CoinsTable } from '@/components/CoinsTable'
 import { CoinProps } from '@/DTO/COIN_DTO'
 import { getCoins } from '@/utils/getCoins'
+import { CoinsStatus } from '@/components/CoinsStatus'
 
 export const revalidate = 30 
 
@@ -32,7 +33,7 @@ export default async function Home() {
   
   return (
    <div>
-    <header className=' py-4 px-4 flex justify-center fixed top-0   w-full text-sm bg-white z-10'>
+    <header className=' py-4 px-4 flex justify-center fixed top-0 shadow-md   w-full text-sm bg-white z-10 max-[908px]:pb-9'>
       <div className='flex w-full justify-between max-w-7xl '>
 
         <div className='flex items-center'>
@@ -56,9 +57,13 @@ export default async function Home() {
           </nav>
 
         </div>
-        <div className='flex items-center gap-x-20'>
+        <div className='flex items-center gap-x-20 max-[908px]:flex-col-reverse'>
           <div>
-            <span>BIT </span>
+            <div className='max-[908px]:absolute left-0 right-0 flex justify-center mt-3 '>
+              <CoinsStatus coins={CoinsWithLogoImage}/>
+
+            </div>
+
           </div>
           <div className='flex  items-center gap-x-6'>
             <SignInModal redirect='/dashboard' unstyled  className='min-w-fit'>
@@ -124,9 +129,9 @@ export default async function Home() {
       src={WavesImage}
     />
 
-    <section className='grid pt-32 max-w-7xl mx-auto grid-cols-[60%_40%]  bg-gradient-to-b pb-32 from-white to-[#F7F7F7] '>
-      <div className='flex flex-col gap-8'>
-          <div className='flex gap-x-8'>
+    <section className='grid pt-32 max-w-7xl mx-auto grid-cols-[60%_40%]  bg-gradient-to-b pb-32 from-white to-[#F7F7F7] max-md:flex max-md:px-4 max-md:flex-col-reverse max-md:gap-y-10'>
+      <div className='flex flex-col gap-8 max-md:flex-grow  max-md:w-full'>
+          <div className='flex gap-x-8 '>
 
             <Card
               icon={() => ( <Image src={CoinSvg} alt=''/>)}
@@ -162,7 +167,7 @@ export default async function Home() {
 
           </div>
       </div>
-      <div className='flex flex-col justify-center pl-8  max-w-md'>
+      <div className='flex flex-col justify-center pl-8 max-md:max-w-[494px] max-md:mx-auto '>
         <strong className='text-yellow-500 text-xl font-bold'>Lorem ipsum </strong>
         <span className='text-5xl mt-1 block text-gray-700 font-bold'>Lorem ipsum </span>
         <p className='mt-4 '>Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor</p>
@@ -181,8 +186,8 @@ export default async function Home() {
     
 
     <section className='bg-yellow-600 mt-32 px-6  py-32 flex justify-center  relative'>
-      <div className='flex w-full justify-between max-w-5xl'>
-        <div className='text-white z-10'>
+      <div className='flex w-full justify-between max-w-5xl gap-8'>
+        <div className='text-white z-10  max-md:w-1/2'>
           <h2 className='font-bold text-2xl text-yellow-200'>
             Lorem ipsum 
           </h2>
@@ -191,7 +196,7 @@ export default async function Home() {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
           </p>
         </div>
-        <div className='w-full max-w-[384px]  z-10'>
+        <div className='w-full max-w-[384px]  z-10 max-md:w-1/2'>
           <NewsLetterForm/>
 
         </div>
