@@ -49,7 +49,7 @@ export function CoinsStatus({coins}:CoinsStatusProps){
 
                 {
                     coins.map(coin => (
-                        <div className="keen-slider__slide flex gap-2">
+                        <div key={coin.id} className="keen-slider__slide flex gap-2">
                             <span className='inline-block text-gray-800'>{coin.symbol}</span>
                             <span className='inline-block'>{FormatPrice.format(coin.quote.USD.price)}</span>
                             <span className={`inline-block  ${coin.quote.USD.percent_change_1h >= 0 ? 'text-green-500': 'text-red-500'}`}>{FormatPercentage.format(coin.quote.USD.percent_change_1h /100).replace('-','')}</span>

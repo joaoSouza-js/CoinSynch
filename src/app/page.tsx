@@ -25,12 +25,6 @@ import { CoinsStatus } from '@/components/CoinsStatus'
 
 export const revalidate = 30 
 
-interface CoinImagesResponse {
-  data:   {
-    id: number;
-    logo: string;
-  }[];
-}
 
 export default async function Home() {
   const CoinsWithLogoImage  = await getCoins({include_images:true})

@@ -1,9 +1,8 @@
 import { prisma } from "@/services/prisma";
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-export async function POST(request: NextRequest,response: NextApiResponse){
+export async function POST(request: NextRequest){
     const coinSchema = z.object({
         amount: z.number({required_error: 'Amount not informed'}),
         coinId: z.coerce.number({required_error: 'CoinId not informed'}),

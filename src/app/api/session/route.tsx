@@ -1,10 +1,9 @@
 import { prisma } from '@/services/prisma';
-import { NextResponse,  } from 'next/server';
+import { NextRequest,NextResponse } from 'next/server';
 import { z } from 'zod';
-import { redirect } from 'next/navigation'
-import { NextApiResponse } from 'next';
 
-export async function POST(request: NextResponse,response: NextApiResponse){
+
+export async function POST(request: NextRequest){
 
     const userSession = z.object({
 

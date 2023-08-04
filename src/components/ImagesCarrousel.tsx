@@ -3,6 +3,7 @@ import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
 
 import Image,{ImageProps} from "next/image";
+import { useEffect } from 'react';
 
 
 
@@ -36,7 +37,13 @@ export function ImagesCarrousel({images}:ImagesCarrouselProps){
           hasScrolled = true;
         }
     }
-    window.addEventListener('scroll', handleScroll);
+    
+
+    useEffect(() => {
+        setTimeout(() => {
+            window.addEventListener('scroll', handleScroll);
+        },500)
+    })
  
     
 
@@ -48,11 +55,12 @@ export function ImagesCarrousel({images}:ImagesCarrouselProps){
             {
                 images.map((image,index) => (
                     <Image
+                        {...image}
                         className="keen-slider__slide w-[500px]  h-[480px] "
                         width={500}
                         height={600}
                         key={index}
-                        {...image}
+                        alt={image.alt}
                     />
                 ))
             }
