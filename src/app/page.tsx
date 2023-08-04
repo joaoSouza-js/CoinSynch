@@ -1,21 +1,25 @@
 
 import Image from 'next/image'
-import {Button} from '@/components/Button'
-import Logo from '@/assets/Logo.svg'
 import Link from 'next/link'
-import HappyWomenImage  from '@/assets/happy-woman.png'
 import { ArrowRightIcon } from '@heroicons/react/24/solid'
-import WavesImage from '@/assets/waves.svg'
-import WavesFormImage from '@/assets/wavesForm.svg'
-import { Card } from '@/components/Card'
+
+import Logo from '@/assets/Logo.svg'
 import CoinSvg from '@/assets/coin.svg'
-import { NewsLetterForm } from '@/components/NewsLetterForm'
-import { ImagesCarrousel } from '@/components/ImagesCarrousel'
+import WavesImage from '@/assets/waves.svg'
+import GraphicSvg from '@/assets/graphic.svg'
+import DevicesSvg from '@/assets/devices.svg'
+import WavesFormImage from '@/assets/wavesForm.svg'
+import HappyWomenImage  from '@/assets/happy-woman.png'
+
+
+import { Card } from '@/components/Card'
+import { CoinsTable } from '@/components/CoinsTable'
 import { SignUpModal } from '@/components/signUpModal'
 import { SignInModal } from '@/components/signInModal'
-import axios from 'axios'
-import { CoinsTable } from '@/components/CoinsTable'
-import { CoinProps } from '@/DTO/COIN_DTO'
+import { ImagesCarrousel } from '@/components/ImagesCarrousel'
+import { NewsLetterForm } from '@/components/NewsLetterForm'
+
+import TradeSvg from '@/assets/trade.svg'
 import { getCoins } from '@/utils/getCoins'
 import { CoinsStatus } from '@/components/CoinsStatus'
 
@@ -134,14 +138,16 @@ export default async function Home() {
           <div className='flex gap-x-8 '>
 
             <Card
-              icon={() => ( <Image src={CoinSvg} alt=''/>)}
+              icon={CoinSvg}
+              altIcon=''
               subtitle='Crypto Solutions'
               title='Crypto Solutions'
               content='Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, '
 
             />
               <Card
-              icon={() => ( <Image src={CoinSvg} alt=''/>)}
+              icon={TradeSvg}
+              altIcon=''
               subtitle='Crypto Solutions'
               title='Crypto Solutions'
               content='Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, '
@@ -150,14 +156,16 @@ export default async function Home() {
           </div>
           <div className='flex gap-x-8 self-end'>
             <Card
-                icon={() => ( <Image src={CoinSvg} alt=''/>)}
+                icon={GraphicSvg}
+                altIcon=''
                 subtitle='Crypto Solutions'
                 title='Crypto Solutions'
                 content='Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, '
 
               />
                 <Card
-                icon={() => ( <Image src={CoinSvg} alt=''/>)}
+                icon={DevicesSvg}
+                altIcon=''
                 subtitle='Crypto Solutions'
                 title='Crypto Solutions'
                 content='Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, '

@@ -8,6 +8,7 @@ import { CoinStatics } from './components/CoinStatics'
 import { FormatPercentage, FormatPrice } from '@/utils/format'
 import ElephantImage from '@/assets/elephant.png'
 import Link from 'next/link'
+import { Metadata } from 'next'
 
 interface UserCoin {
     id: string;
@@ -15,6 +16,11 @@ interface UserCoin {
     name: string;
     amount: number;
     url: string;
+}
+
+export const metadata: Metadata = {
+    title:'Dashboard',
+    description: "Introducing our powerful Dashboard Screen, your central hub for comprehensive insights and control. With an intuitive and visually engaging interface, our Dashboard Screen brings together all your essential data and analytics in one place. Stay informed with real-time updates on key metrics, performance trends, and user activities. Customize your view to focus on what matters most to you and easily navigate through your data with interactive charts and graphs. From business analytics to personal goals tracking, our Dashboard Screen empowers you to make data-driven decisions and drive success. Take charge of your information like never before and experience the convenience of a unified data management solution with our Dashboard Screen."
 }
 
 

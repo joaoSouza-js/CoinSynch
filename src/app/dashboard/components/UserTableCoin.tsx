@@ -35,7 +35,13 @@ export function UserTableCoin({userCoins,TransferCoin}:UserTableCoinProps){
                             <td className='h-16 px-6 ' >{String(index +1).padStart(2,'0')}</td>
                             <td className='h-16 py-6  '>
                                 <div className="flex items-center gap-4">
-                                    <Image className="w-8 h-8 " width={32} height={32} alt="" src={coin.url ?? ''}/> 
+                                    <Image 
+                                        className="w-8 h-8 " 
+                                        width={32} 
+                                        height={32} 
+                                        alt={`${coin.name} symbol`} 
+                                        src={coin.url ?? ''}
+                                    /> 
                                     <span>
                                         {coin.name} <span className="text-gray-500"> {coin.symbol}</span>
                                     </span>
@@ -65,7 +71,7 @@ export function UserTableCoin({userCoins,TransferCoin}:UserTableCoinProps){
                                     >
                                     <Image
                                         src={TranferSvg}
-                                        alt=""
+                                        alt="TranferIcon"
                                         className='w-4 h-4'
                                         width={16}
                                         height={16}

@@ -1,9 +1,8 @@
 'use client'
 
-import { CoinProps, CoinWithImageProps } from "@/DTO/COIN_DTO";
-import { Button } from "@/components/Button";
+import { CoinProps,  } from "@/DTO/COIN_DTO";
 import { FormatPercentage, FormatPrice } from "@/utils/format";
-import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { PlusIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -40,7 +39,13 @@ export function CoinsTable({coins}:CoinsTableProps){
                         <tr key={coin.id} >
                             <td className='p-6' >{String(index +1).padStart(2,'0')}</td>
                             <td className='p-6 flex items-center gap-4'>
-                                <Image className="w-8 h-8 " width={32} height={32} alt="" src={coin.url ?? ''}/> 
+                                <Image 
+                                    className="w-8 h-8 " 
+                                    width={32} 
+                                    height={32} 
+                                    alt={`${coin.name} symbol`} 
+                                    src={coin.url ?? ''}
+                                /> 
                                 <span>
                                     {coin.name} <span className="text-gray-500"> {coin.symbol}</span>
                                 </span>
