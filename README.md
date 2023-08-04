@@ -1,34 +1,144 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+**CoinSynch: aplicação de cripto moedas**
 
-## Getting Started
 
-First, run the development server:
+## Descrição
+
+CoinSynch  é uma aplicação web construída com Next.js que fornece um painel poderoso e amigável para traders de criptomoedas. Permite que os usuários monitorem dados de mercado em tempo real, rastreiem suas carteiras e acessem análises abrangentes para tomar decisões informadas nas negociações. A aplicação integra-se com APIs populares de criptomoedas para obter dados de mercado atualizados, garantindo precisão e informações em tempo real.
+
+## Funcionalidades
+
+- Dados de mercado em tempo real para criptomoedas populares.
+- Gerenciamento de carteiras com rastreamento de lucro/perda.
+- Design responsivo para uso sem problemas em desktops e dispositivos móveis.
+
+## Como Rodar
+
+Antes de executar a aplicação, verifique se o Node.js está instalado no seu sistema.
+
+1. Clone o repositório:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+git clone https://github.com/joaoSouza-js/portal-front-end-challenge
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Navegue até o diretório do projeto:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cd portal-front-end-challenge
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. Instale as dependências:
 
-## Learn More
+```bash
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+ou
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+ou
 
-## Deploy on Vercel
+```bash
+yarn install
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Crie um arquivo `.env.local` na raiz do projeto e adicione sua chave de API para dados de criptomoedas:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   4.1 a api para consume de cryptos foi a coinmarketcap você poder gerar a sua api key em https://pro.coinmarketcap.com/account
+
+```plaintext
+NEXT_PUBLIC_COIN_MARKET_API_KEY
+```
+
+
+5. Execute a build do app com:
+
+```bash
+npm run build
+```
+
+ou
+
+```bash
+pnpm run build
+```
+
+ou
+
+```bash
+yarn build
+```
+
+5. Execute o servidor com a build pronta com o comando start:
+
+```bash
+npm run build
+```
+
+ou
+
+```bash
+pnpm run build
+```
+
+ou
+
+```bash
+yarn build
+```
+
+  5.1 agora inicie o servidor com o comando start 
+      ```bash
+    npm run start
+    ```
+    
+    ou
+    
+    ```bash
+    pnpm run start
+    ```
+    
+    ou
+    
+    ```bash
+    yarn start
+    ```
+
+6. se Você não coseguir execuatar o sevidor em forma de build por algum motivo execute em mode de desevolvedor como o comando dev
+       ```bash
+    npm run dev
+    ```
+    
+    ou
+    
+    ```bash
+    pnpm run dev
+    ```
+    
+    ou
+    
+    ```bash
+    yarn dev
+    ```
+  
+
+8. Abra seu navegador e acesse `http://localhost:3000` para utilizar a aplicação.
+
+## Configuração
+
+A aplicação requer uma chave de API válida para buscar os dados das criptomoedas. Você pode obter uma chave em um provedor de API de criptomoedas  ( CoinMarketCap) e adicioná-la ao arquivo `.env.local` como mostrado na seção "Como Rodar".
+
+
+## Licença
+
+Este projeto está licenciado sob a [Licença MIT](https://opensource.org/licenses/MIT).
+
+## Reconhecimentos
+
+- O desenvolvimento deste dashboard foi inspirado pela vibrante comunidade de criptomoedas e pela necessidade de uma ferramenta de negociação poderosa e acessível.
+- Agradecimento especial à equipe do Next.js e aos desenvolvedores das várias bibliotecas e APIs utilizadas neste projeto por torná-lo possível.
+
+Sinta-se à vontade para modificar este README de acordo com os detalhes específicos do seu projeto e adicionar seções relevantes, como Implantação, Testes, etc. Feliz codificação!
