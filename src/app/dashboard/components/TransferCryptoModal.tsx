@@ -49,7 +49,6 @@ export function TransferCryptoModal({children,coinSelected,TransferCoin}:Transfe
             await TransferCoin({
                 amount: formData.amount as number,
                 coinId: coinSelected.id,
-                userId: user?.id as string,
                 isTransferIn: formData.isTransferIn as boolean
             })
             setModalIsOpen(false)
