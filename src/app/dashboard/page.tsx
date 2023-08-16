@@ -38,7 +38,7 @@ export default async function Dashboard(){
 
        
         try {
-            const response =  await fetch(`http://localhost:3000/api/coin/${user.id}`,{
+            const response =  await fetch(`${process.env.NEXT_PUBLIC_APPLICATION_URL}/api/coin/${user.id}`,{
                 cache: 'no-cache'
             })
             const data: {coins: UserCoin[]} = await response.json()
@@ -110,6 +110,7 @@ export default async function Dashboard(){
             
             <Wallet
                 coins={coins}
+                userId={user?.id}
                 userIsLoggedIn={userIsLoggedIn}
                 userCoins={userCoinsCurrentData}
              className='mt-8'

@@ -9,6 +9,7 @@ import Image from "next/image";
 import { getUser } from "@/utils/user";
 import { SideBar } from "./components/Sidebar";
 import { UserInfo } from "./components/UserInfo";
+import Link from "next/link";
 interface DashboardLayoutProps {
     children: ReactNode
 }
@@ -23,10 +24,12 @@ export default function DashboardLayout({children}: DashboardLayoutProps) {
     return (
         <div className="mx-auto flex flex-col bg-gray-100  min-h-screen">
             <header className=' py-4 pr-8 pl-10 flex justify-between shadow-md   w-full text-sm bg-white'>
-                <Image
-                    src={Logo}
-                    alt=""
-                />
+                <Link title="go home" href={'/'}>
+                    <Image
+                        src={Logo}
+                        alt=""
+                    />
+                </Link>
                
                 <UserInfo name={firstName} />
             </header>

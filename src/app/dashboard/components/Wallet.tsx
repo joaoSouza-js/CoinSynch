@@ -19,7 +19,8 @@ import { useState } from 'react'
 interface WalletProps {
     className?: string,
     coins: CoinProps[]
-    userCoins: CoinProps[]  
+    userCoins: CoinProps[] 
+    userId?: string
     userIsLoggedIn: boolean
 }
 
@@ -29,20 +30,22 @@ export interface addNewCoinProps {
     coinId: number,
     name: string,
     url: string,
-    userId: string,
 }
 
 export interface TransferCoinProps {
     amount: number,
     coinId: number,
-    userId:string,
     isTransferIn: boolean
 }
 
-export   function Wallet({className,coins,userCoins:user_coins,userIsLoggedIn}: WalletProps){
+export   function Wallet({className,coins,userCoins:user_coins,userIsLoggedIn,userId}: WalletProps){
     const [userCoins,setUserCoins] = useState(user_coins)
 
-    async function handleAddNewCoin({amount,coinId,name,url,userId}:addNewCoinProps){
+    async function handleAddNewCoin({amount,coinId,name,url}:addNewCoinProps){
+        if(!userId){
+            return alert("you're not logged in")
+        }
+
         try {
             await axios.post('/api/coin', {
                 amount: amount,
@@ -87,7 +90,10 @@ export   function Wallet({className,coins,userCoins:user_coins,userIsLoggedIn}: 
 
     }
 
-    async function handleTransferCoin({amount,coinId,userId,isTransferIn}:TransferCoinProps){
+    async function handleTransferCoin({amount,coinId,isTransferIn,}:TransferCoinProps){
+        if(!userId){
+            return alert("you're not logged in")
+        }
         try {
             const response = await axios.put<{
                 isDeleted: boolean

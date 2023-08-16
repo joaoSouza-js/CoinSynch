@@ -35,7 +35,7 @@ export function  AddCryptoModal({ coins,addNewCoin, ...rest}: AddCryptoModalProp
     const {formState, control, register, handleSubmit,reset} = useForm<RegisterNewCoinSchemaData>({
         resolver: zodResolver(RegisterNewCoinSchema)
     })
-    const user = getUserInClientSide()
+   
 
     const { errors, isSubmitting} = formState
 
@@ -45,17 +45,13 @@ export function  AddCryptoModal({ coins,addNewCoin, ...rest}: AddCryptoModalProp
         if(!coin){
             return alert("can't find coin ")
         }
-        if(!user){
-            return alert("you're not logged in")
-        }
-
+       
         try {
             await addNewCoin({
                 amount: formData.amount as number,
                 coinId: formData.coinId,
                 name: coin.name,
                 url: coin.url as string,
-                userId: user.id
             })
            
             setModalIsOpen(false)
