@@ -1,9 +1,17 @@
-**CoinSynch: aplicação de cripto moedas**
+**CoinSynch: aplicação de cripto moedas** (acesse clicando [aqui](https://coin-synch-steel.vercel.app/))
+
+
+---
+![image](https://github.com/joaoSouza-js/CoinSynch/assets/84108989/6752d409-5f74-4bb8-a8f5-b7d9900c0978)
 
 
 ## Descrição
 
 CoinSynch  é uma aplicação web construída com Next.js que fornece um painel poderoso e amigável para traders de criptomoedas. Permite que os usuários monitorem dados de mercado em tempo real, rastreiem suas carteiras e acessem análises abrangentes para tomar decisões informadas nas negociações. A aplicação integra-se com APIs populares de criptomoedas para obter dados de mercado atualizados, garantindo precisão e informações em tempo real.
+
+![image](https://github.com/joaoSouza-js/CoinSynch/assets/84108989/119ffc4e-56a1-49df-a5f7-b53a810cb84e)
+
+
 
 ## Funcionalidades
 
