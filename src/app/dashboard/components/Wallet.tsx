@@ -56,7 +56,7 @@ export   function Wallet({className,coins,userCoins:user_coins,userIsLoggedIn,us
         
             })
 
-            const coin = coins.find(coin => coin.id)
+            const coin = coins.find(coin => coin.id === coinId)
             
             if(!coin) return
 
