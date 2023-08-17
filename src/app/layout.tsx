@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
   },
   icons: {
-    icon: 'http://localhost:3000/icon.svg'
+    icon: `${process.env.NEXT_PUBLIC_APPLICATION_URL}/icon.svg`
   },
   alternates: {
     canonical: '/',
